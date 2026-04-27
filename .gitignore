@@ -1,6 +1,11 @@
 .env
+.envrc
 .venv/
+env/
+venv/
 __pycache__/
 *.pyc
+*.py[codz]
 logs/
 *.log
+.streamlit/secrets.toml
