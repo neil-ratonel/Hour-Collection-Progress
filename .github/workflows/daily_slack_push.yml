@@ -1,0 +1,38 @@
+name: Daily Holiday Compliance Slack Push
+
+on:
+  schedule:
+    - cron: "0 17 * * *"  # 9AM PST (UTC-8) daily
+  workflow_dispatch:        # allow manual trigger from GitHub UI
+
+jobs:
+  push-to-slack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.9"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install snowflake-connector-python pandas python-dotenv slack-sdk
+
+      - name: Run Slack push
+        env:
+          SNOWFLAKE_ACCOUNT:        ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_USER:           ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PAT:            ${{ secrets.SNOWFLAKE_PAT }}
+          SNOWFLAKE_WAREHOUSE:      ${{ secrets.SNOWFLAKE_WAREHOUSE }}
+          SNOWFLAKE_DATABASE:       ${{ secrets.SNOWFLAKE_DATABASE }}
+          SNOWFLAKE_SCHEMA:         ${{ secrets.SNOWFLAKE_SCHEMA }}
+          SNOWFLAKE_ROLE:           ${{ secrets.SNOWFLAKE_ROLE }}
+          SNOWFLAKE_AUTHENTICATOR:  ${{ secrets.SNOWFLAKE_AUTHENTICATOR }}
+          SLACK_WEBHOOK_URL:        ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL_2:      ${{ secrets.SLACK_WEBHOOK_URL_2 }}
+        run: python push_to_slack.py
