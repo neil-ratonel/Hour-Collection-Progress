@@ -14,7 +14,7 @@ REPORT_TOKEN = "6e815b1b6a3c"
 QUERY_TOKEN  = "679745cfccbb"
 
 POLL_INTERVAL = 5   # seconds between status checks
-MAX_WAIT      = 300 # seconds before giving up
+MAX_WAIT      = 600 # seconds before giving up
 
 
 def _auth() -> tuple[str, str]:
