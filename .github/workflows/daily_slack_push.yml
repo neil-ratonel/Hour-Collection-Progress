@@ -2,7 +2,7 @@ name: Daily Holiday Compliance Slack Push
 
 on:
   schedule:
-    - cron: "0 17 * * *"  # 9AM PST (UTC-8) daily
+    - cron: "0 16 * * *"  # 9AM PDT (UTC-7) daily
   workflow_dispatch:        # allow manual trigger from GitHub UI
 
 jobs:
