@@ -52,7 +52,8 @@ def _get_query_run_token(run_token: str) -> str:
     url = f"{MODE_BASE}/{WORKSPACE}/reports/{REPORT_TOKEN}/runs/{run_token}/query_runs"
     resp = requests.get(url, auth=_auth(), timeout=30)
     resp.raise_for_status()
-    query_runs = resp.json().get("query_runs", [])
+    data = resp.json()
+    query_runs = data.get("query_runs") or data.get("_embedded", {}).get("query_runs", [])
     for qr in query_runs:
         if qr.get("query_token") == QUERY_TOKEN:
             return qr["token"]
