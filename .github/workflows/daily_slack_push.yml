@@ -21,18 +21,12 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install snowflake-connector-python pandas python-dotenv slack-sdk streamlit
+          pip install pandas python-dotenv slack-sdk requests
 
       - name: Run Slack push
         env:
-          SNOWFLAKE_ACCOUNT:        ${{ secrets.SNOWFLAKE_ACCOUNT }}
-          SNOWFLAKE_USER:           ${{ secrets.SNOWFLAKE_USER }}
-          SNOWFLAKE_PAT:            ${{ secrets.SNOWFLAKE_PAT }}
-          SNOWFLAKE_WAREHOUSE:      ${{ secrets.SNOWFLAKE_WAREHOUSE }}
-          SNOWFLAKE_DATABASE:       ${{ secrets.SNOWFLAKE_DATABASE }}
-          SNOWFLAKE_SCHEMA:         ${{ secrets.SNOWFLAKE_SCHEMA }}
-          SNOWFLAKE_ROLE:           ${{ secrets.SNOWFLAKE_ROLE }}
-          SNOWFLAKE_AUTHENTICATOR:  ${{ secrets.SNOWFLAKE_AUTHENTICATOR }}
-          SLACK_WEBHOOK_URL:        ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_WEBHOOK_URL_2:      ${{ secrets.SLACK_WEBHOOK_URL_2 }}
+          MODE_API_TOKEN:      ${{ secrets.MODE_API_TOKEN }}
+          MODE_API_SECRET:     ${{ secrets.MODE_API_SECRET }}
+          SLACK_WEBHOOK_URL:   ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL_2: ${{ secrets.SLACK_WEBHOOK_URL_2 }}
         run: python push_to_slack.py

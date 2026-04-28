@@ -18,6 +18,7 @@ from __future__ import annotations
 import argparse
 import datetime
 import logging
+import os
 import sys
 
 logging.basicConfig(
@@ -30,14 +31,19 @@ log = logging.getLogger(__name__)
 
 def run_push() -> None:
     from config import get_slack_config, SCHEDULE_CRON, TIMEZONE
-    from data_access import fetch_compliance_data_no_cache
     from slack_notifier import build_slack_message, post_to_slack
+
+    use_mode = bool(os.getenv("MODE_API_TOKEN"))
+    if use_mode:
+        from mode_data_access import fetch_compliance_data_from_mode as fetch_fn
+    else:
+        from data_access import fetch_compliance_data_no_cache as fetch_fn
 
     run_ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M ET")
     log.info("Fetching holiday compliance data…")
 
     try:
-        df = fetch_compliance_data_no_cache()
+        df = fetch_fn()
     except Exception as exc:
         log.error("Snowflake query failed: %s", exc)
         sys.exit(1)
